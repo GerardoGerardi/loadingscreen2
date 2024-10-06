@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузочный экран GMOD TTT</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="loader">
+        <h1>Добро пожаловать на сервер TTT</h1>
+        <p>Пожалуйста, подождите, идет загрузка...</p>
+
+        <!-- Локально размещённое видео -->
+        <div class="video-container">
+            <video id="bg-video" width="560" height="315" autoplay muted loop>
+                <!-- Укажите путь к видео, исходя из директории проекта -->
+                <source src="video/steve_cold_22mb.mp4" type="video/mp4">
+                Ваш браузер не поддерживает видео.
+            </video>
+        </div>
+
+        <!-- Проигрывание звука отдельно -->
+        <audio id="bg-audio" loop>
+            <!-- Укажите путь к звуковому файлу -->
+            <source src="audio/steve_cold.mp3" type="audio/mp3">
+            Ваш браузер не поддерживает аудио.
+        </audio>
+    </div>
+
+    <!-- Индикатор загрузки -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <script>
+        // Получаем элементы видео и аудио
+        const video = document.getElementById('bg-video');
+        const audio = document.getElementById('bg-audio');
+
+        // Запускаем видео замьюченным и аудио одновременно при загрузке страницы
+        window.addEventListener('load', function() {
+            video.play();
+
+            // Пытаемся воспроизвести звук
+            audio.play().catch(function(error) {
+                console.log("Автозапуск звука заблокирован браузером. Пользователь должен взаимодействовать с страницей.");
+            });
+        });
+
+        // Автоматический прогресс загрузки (анимация)
+        let progress = 0;
+        const progressBar = document.getElementById('progress-bar');
+
+        function updateProgress() {
+            if (progress < 100) {
+                progress += 1;
+                progressBar.style.width = progress + '%';
+            } else {
+                clearInterval(progressInterval); // Останавливаем обновление, когда прогресс достигает 100%
+            }
+        }
+
+        // Запускаем обновление прогресса каждую 100 мс
+        const progressInterval = setInterval(updateProgress, 100);
+    </script>
+</body>
+</html>
